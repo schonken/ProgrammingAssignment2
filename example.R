@@ -1,3 +1,6 @@
+## The following script implments the example functions
+## illustrating the use og the "<<-" operator
+
 makeVector <- function(x = numeric()) {
     m <- NULL
     set <- function(y) {
