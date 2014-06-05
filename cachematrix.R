@@ -1,15 +1,43 @@
-## Put comments here that give an overall description of what your
-## functions do
+## The following functions provide caching capabilities for
+## potentially costly matrix inversions
 
-## Write a short comment describing this function
-
+## Cache and return a list for input matrix 'x' providing functions
+##  - set()
+##  - get()
+##  - setsolve()
+##  - getinv()
 makeCacheMatrix <- function(x = matrix()) {
-
+    s <- NULL
+    set <- function(y) {
+        x <<- y
+        s <<- NULL
+    }
+    get <- function() x
+    setsolve <- function(solve) s <<- solve
+    getsolve <- function() s
+    list(set = set, get = get,
+         setsolve = setsolve,
+         getsolve = getsolve)
 }
 
 
-## Write a short comment describing this function
-
+## Calculate, cache and return a matrix that is the inverse of 'x'
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+    s <- x$getsolve()
+    if(!is.null(s)) {
+        return(s)
+    }
+    
+    #message("cache is empty (i.e. s is null)")
+    data <- x$get()
+    s <- solve(data, ...)
+    x$setsolve(s)
+    s
 }
+
+## Just a bit of script to test if all is well in the land on sovle caching
+# mtrx <- makeCacheMatrix(matrix(1:4, 2, 2))
+# cacheSolve(mtrx)
+# print(mtrx$get())
+# print(mtrx$getsolve())
+# print(mtrx$getsolve())
